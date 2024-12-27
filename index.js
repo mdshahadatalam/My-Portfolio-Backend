@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
@@ -16,16 +17,14 @@ app.post('/sendEmail', async function (req, res) {
   console.log(req.body);
   const transporter = nodemailer.createTransport({
     service:"gmail",
-    port: 587,
-    secure: false, // true for port 465, false for other ports
     auth: {
-      user: "mdshahadatalam25@gmail.com",
-      pass: "bmgy sbbw ctbm prdi",
+      user: process.env.EMAIL_USER, // Load from environment variables
+        pass: process.env.EMAIL_PASS,
     },
   });
   
   const info = await transporter.sendMail({
-    from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
+    from: `"Client Message" <${process.env.EMAIL_USER}>`, // sender address
     to: "bar@example.com, baz@example.com", // list of receivers
     subject: req.body.subject, // Subject line
     html: `<b>Name:</b>${req.body.name}
